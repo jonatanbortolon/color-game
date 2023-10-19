@@ -8,9 +8,9 @@ export function GameHistoryComponent() {
   const { lastHistory } = useGame()
 
   return (
-    <div className="w-full h-full flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-2">
       <div className="w-full flex gap-2">
-        <div className="flex w-full justify-start items-center p-2">
+        <div className="flex w-full justify-center items-center p-2">
           <span className="text-center">Guessed color</span>
         </div>
         <Separator orientation="vertical" />
