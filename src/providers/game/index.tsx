@@ -25,7 +25,6 @@ export function GameProvider({ children }: Props) {
     'easy',
   )
   const [currentScore, setCurrentScore] = useState(0)
-  const [currentHistory, setCurrentHistory] = useState<Array<History>>([])
   const [currentOptions, setCurrentOptions] = useState<Option>(() =>
     generateOptions(),
   )
@@ -54,7 +53,7 @@ export function GameProvider({ children }: Props) {
   useEffect(() => {
     if (roundTimer > 0) return
 
-    setCurrentHistory((old) => [
+    setLastHistory((old) => [
       ...old,
       {
         response: null,
@@ -104,6 +103,8 @@ export function GameProvider({ children }: Props) {
 
     startGameCountdown()
 
+    setLastHistory([])
+
     nextRound()
   }
 
@@ -126,12 +127,10 @@ export function GameProvider({ children }: Props) {
     }
 
     setCurrentScore(0)
-    setCurrentHistory([])
-    setLastHistory(currentHistory)
   }
 
   function answer(response: Color) {
-    setCurrentHistory((old) => [
+    setLastHistory((old) => [
       ...old,
       {
         response,
