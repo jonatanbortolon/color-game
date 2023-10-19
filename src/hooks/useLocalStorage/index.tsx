@@ -30,6 +30,10 @@ export function useLocalStorage<T>(
 
   const [storedValue, setStoredValue] = useState<T>(getInitialValue)
 
+  useEffect(() => {
+    setStoredValue(getInitialValue())
+  }, [key])
+
   const setValue = useCallback(
     (value: unknown) => {
       if (typeof window === 'undefined') {

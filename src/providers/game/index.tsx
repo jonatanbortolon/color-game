@@ -8,20 +8,26 @@ import { History } from '@/types/history'
 import { gameConfig } from '@/gameConfig'
 import { Option } from '@/types/options'
 import { Difficult } from '@/types/difficult'
+import { useUsers } from '@/hooks/useUser'
 
 type Props = PropsWithChildren
 
 export function GameProvider({ children }: Props) {
+  const { currentUser } = useUsers()
+
   const [isStarted, setIsStarted] = useState(false)
 
-  const [highestScore, setHighestScore] = useLocalStorage('highScore', 0)
+  const [highestScore, setHighestScore] = useLocalStorage(
+    'highScore-' + currentUser,
+    0,
+  )
   const [lastHistory, setLastHistory] = useLocalStorage<Array<History>>(
-    'history',
+    'history-' + currentUser,
     [],
   )
 
   const [currentDifficult, setCurrentDifficult] = useLocalStorage<Difficult>(
-    'difficult',
+    'difficult-' + currentUser,
     'easy',
   )
   const [currentScore, setCurrentScore] = useState(0)
@@ -116,11 +122,16 @@ export function GameProvider({ children }: Props) {
     resetGameCountdown()
     resetRoundCountdown()
 
+    setLastHistory([])
+
     setCurrentScore(0)
   }
 
   function endGame() {
-    restartGame()
+    setIsStarted(false)
+
+    resetGameCountdown()
+    resetRoundCountdown()
 
     if (currentScore > highestScore) {
       setHighestScore(currentScore)
